@@ -34,7 +34,6 @@ public class RuleServiceImpl implements RuleService {
             Rule rule = new Rule();
             rule.setRuleString(ruleString);
             rule.setAst(root); // Set the AST in the Rule object
-            
 
             // Save the rule to the repository
             return ruleRepository.save(rule);
@@ -78,54 +77,49 @@ public class RuleServiceImpl implements RuleService {
 
 
     // Service method to evaluate the rule
-
     @Override
     public boolean evaluateRule(Long ruleId, Map<String, Object> data) {
         Rule rule = getRule(ruleId);
-        log.info("Retrieved rule: {}", rule);
         if (rule == null) {
             throw new IllegalArgumentException("Rule not found with ID: " + ruleId);
         }
 
         try {
-            Node ruleNode = rule.getAst();
-
-            return evaluateNode(ruleNode, data);
+            String ruleString = rule.getRuleString();
+            return evaluateRuleString(ruleString, data);
         } catch (Exception e) {
             log.error("Error evaluating rule [ID: {}]: {}", ruleId, e.getMessage(), e);
             throw new RuntimeException("Error evaluating rule", e);
         }
     }
 
-    private boolean evaluateNode(Node node, Map<String, Object> data) {
-        if (node == null) {
-            return false; // or handle according to your requirement
+    private boolean evaluateRuleString(String ruleString, Map<String, Object> data) {
+        log.info("Evaluating rule string: {}", ruleString);
+
+        // Split rule string into conditions and operators (assuming a simple format like "age > 30 AND salary >= 50000")
+        String[] conditions = ruleString.split("\\s+(AND|OR)\\s+");
+        String[] operators = ruleString.split("[^AND|OR]+");
+
+        boolean result = evaluateCondition(conditions[0], data); // Evaluate the first condition
+
+        for (int i = 1; i < conditions.length; i++) {
+            String operator = operators[i].trim();
+            boolean nextConditionResult = evaluateCondition(conditions[i], data);
+
+            result = switch (operator) {
+                case "AND" -> result && nextConditionResult;
+                case "OR" -> result || nextConditionResult;
+                default -> throw new IllegalArgumentException("Unsupported operator: " + operator);
+            };
         }
 
-        // Evaluate based on the node type
-        if ("operand".equals(node.getType())) {
-            return evaluateCondition(node, data);
-        } else if ("operator".equals(node.getType())) {
-            boolean leftResult = evaluateNode(node.getLeft(), data);
-            boolean rightResult = evaluateNode(node.getRight(), data);
-            return evaluateOperator(node.getValue(), leftResult, rightResult);
-        }
-
-        throw new IllegalArgumentException("Unknown node type: " + node.getType());
+        return result;
     }
 
-    private boolean evaluateOperator(String operator, boolean leftResult, boolean rightResult) {
-        return switch (operator) {
-            case "AND" -> leftResult && rightResult;
-            case "OR" -> leftResult || rightResult;
-            default -> throw new IllegalArgumentException("Unsupported operator: " + operator);
-        };
-    }
-
-    private boolean evaluateCondition(Node conditionNode, Map<String, Object> data) {
-        String[] parts = conditionNode.getValue().trim().split(" ");
+    private boolean evaluateCondition(String condition, Map<String, Object> data) {
+        String[] parts = condition.trim().split(" ");
         if (parts.length != 3) {
-            throw new IllegalArgumentException("Invalid condition format: " + conditionNode.getValue());
+            throw new IllegalArgumentException("Invalid condition format: " + condition);
         }
 
         String attribute = parts[0];

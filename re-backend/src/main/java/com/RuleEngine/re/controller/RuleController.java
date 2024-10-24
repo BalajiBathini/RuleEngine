@@ -1,5 +1,6 @@
 package com.RuleEngine.re.controller;
 
+import com.RuleEngine.re.exception.ResourceNotFoundException;
 import com.RuleEngine.re.model.Node;
 import com.RuleEngine.re.model.Rule;
 import com.RuleEngine.re.service.RuleService;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 @CrossOrigin("*")
 @RestController
@@ -51,15 +51,13 @@ public class RuleController {
         return ResponseEntity.ok(combinedNode);
     }
 
+    // API Endpoint for evaluating rule
     @PostMapping("/{id}/evaluate")
-    public ResponseEntity<Map<String, Object>> evaluateRule(@PathVariable Long id, @RequestBody Map<String, Object> data) {
+    public ResponseEntity<?> evaluateRule(@PathVariable Long id, @RequestBody Map<String, Object> data) {
         try {
-            log.info("Evaluating rule with ID: {}", id);
+            log.info("Evaluating rule with ID: {}, Data: {}", id, data);
             boolean result = ruleService.evaluateRule(id, data);
             return ResponseEntity.ok(Map.of("result", result));
-        } catch (NoSuchElementException e) { // Assuming you throw this if rule is not found
-            log.error("Rule not found: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
         } catch (IllegalArgumentException e) {
             log.error("Error evaluating rule: {}", e.getMessage());
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));

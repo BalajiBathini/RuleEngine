@@ -1,0 +1,232 @@
+body {
+  background-color: #F5F5F5;
+  color: #333333;
+  font-family: 'Calibri', 'Candara', 'Segoe', 'Segoe UI', 'Optima', 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5rem !important; /* Title size */
+  color: #4A4E69;
+  
+  margin-top: 20px;
+}
+.navbar{
+  background-color: #4A4E69;
+}
+h2{
+  
+  font-size: 2rem !important; /* Title size */
+  color: #4A4E69;
+  margin-top: 20px;
+}
+.navbar a{
+  font-weight: bold;
+  color: #F5F5F5;
+}
+
+.rule-engine-wrapper {
+  background-color: #F2E9E4;
+  padding: 5%;
+  width: 60%;
+  margin: 3% auto;
+  max-height: 80vh;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+}
+
+.rule-form {
+  display: flex;
+  flex-direction: column; /* Stack input fields */
+  border-bottom: 1px solid #EAE7DC;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.rule-input {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.rule-input label {
+  margin-bottom: 10px;
+  font-size:24px;
+  font-weight: bold;
+  color: #3E362E;
+}
+
+.rule-input input
+{
+  
+  background-color: #ffffff;
+  color: #333333;
+  border: none;
+  padding: 10px;
+
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.rule-btn {
+  background-color: #4A4E69;
+  color: #FFFFFF;
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  align-self: center;
+  margin-top: 20px;
+  transition: transform 0.2s; /* Scale on hover */
+}
+.rule-btn:hover {
+  transform: scale(1.1);
+  background-color: #22223B; /* Slightly enlarge on hover */
+}
+
+
+
+.rule-list {
+  list-style-type: none; /* Remove bullets */
+  padding: 0;
+  margin: 0;
+}
+
+.rule-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #F2E9E4;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+
+
+.rule-actions {
+  display: flex;
+  justify-content: center;
+
+  gap: 10px; /* Space between buttons */
+}
+
+.rule-actions button {
+ 
+ background-color: #4A4E69;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+
+  padding: 10px;
+  font-size: 20px; /* Button size */
+  transition: transform 0.2s; /* Scale on hover */
+}
+
+.rule-actions button:hover {
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Edit icon */
+.rule-actions button.evaluate a{
+  color: #EAE7DC;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+.rule-actions button.evaluate:hover a{
+  color: #00e67a; /* Change color on hover */
+}
+
+/* Delete icon */
+.rule-actions button.delete {
+  color: #EAE7DC;
+  padding: 10px 25px 10px 25px;
+}
+.rule-actions button.delete:hover {
+  color: #dc3545; /* Change color on hover */
+}
+
+/* Modal for creating/editing rules */
+.modal {
+  display: flex !important; /* Flex for modal */
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-dialog {
+  max-width: 500px; /* Max width for modal */
+  margin: 1.75rem auto; /* Center modal */
+}
+
+.modal-content {
+  color: #000000; /* Modal text color */
+}
+
+.modal-header {
+  border-bottom: none;
+  color: #000000; /* Header color */
+}
+
+.modal-title {
+  font-size: 1.5rem; /* Title font size */
+}
+
+.modal-body {
+  font-size: 1rem; /* Body font size */
+  padding: 1rem; /* Padding inside modal */
+}
+
+.modal-footer {
+  border-top: none; /* No top border */
+}
+
+/* Media queries for responsiveness */
+@media only screen and (max-width: 768px) {
+  .rule-engine-wrapper {
+    width: 95%; /* Width for smaller screens */
+    padding: 5%; /* Padding adjustments */
+  }
+
+  h1 {
+    font-size: 2rem !important; /* Smaller title size */
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem; /* Title size for mobile */
+  }
+
+  .rule-list-item {
+    flex-direction: column; /* Stack items vertically */
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .rule-list-item h3 {
+    font-size: 1.2rem; /* Smaller rule title size */
+  }
+}
+
+
+
+footer {
+  text-align: center; /* Center footer */
+}
+.error-message {
+  color: red;
+}
+
+.ast-result {
+  margin-top: 20px;
+  background-color: #ffffff;
+  padding: 10px;
+  height: 250px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow-y: auto; /* Allows horizontal scrolling for long lines */
+}
